@@ -3,6 +3,12 @@ import { motion } from 'framer-motion';
 
 const Contact: React.FC = () => {
     const [selectedPackage, setSelectedPackage] = useState('none');
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        message: ''
+    });
 
     useEffect(() => {
         // Check for package in URL params on mount
@@ -20,10 +26,35 @@ const Contact: React.FC = () => {
         }
     }, []);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { id, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [id]: value
+        }));
+    };
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission logic here
-        console.log('Form submitted');
+
+        // Email validation regex
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!emailRegex.test(formData.email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+
+        const subject = `Portfolio Contact: ${formData.name} - ${selectedPackage} Package`;
+        const body = `Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+Package: ${selectedPackage}
+
+Message:
+${formData.message}`;
+
+        window.location.href = `mailto:aquibalam.13@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     };
 
     return (
@@ -35,7 +66,7 @@ const Contact: React.FC = () => {
                 transition={{ duration: 0.6 }}
                 className="mb-16 text-center"
             >
-                <h2 className="text-3xl md:text-5xl font-semibold mb-4 text-gray-100 tracking-wide">Contact Me</h2>
+                <h2 className="text-3xl md:text-5xl font-semibold mb-4 text-gray-100 uppercase tracking-wide">Contact Me</h2>
                 <p className="text-gray-400 text-xl font-light">Let's build something together</p>
             </motion.div>
 
@@ -53,6 +84,8 @@ const Contact: React.FC = () => {
                             <input
                                 type="text"
                                 id="name"
+                                value={formData.name}
+                                onChange={handleChange}
                                 required
                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-white/30 transition-colors"
                                 placeholder="John Doe"
@@ -63,6 +96,8 @@ const Contact: React.FC = () => {
                             <input
                                 type="email"
                                 id="email"
+                                value={formData.email}
+                                onChange={handleChange}
                                 required
                                 className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-white/30 transition-colors"
                                 placeholder="john@example.com"
@@ -75,6 +110,8 @@ const Contact: React.FC = () => {
                         <input
                             type="tel"
                             id="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
                             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-white/30 transition-colors"
                             placeholder="+1 (555) 000-0000"
                         />
@@ -111,6 +148,8 @@ const Contact: React.FC = () => {
                         <label htmlFor="message" className="text-sm font-medium text-gray-300">Message</label>
                         <textarea
                             id="message"
+                            value={formData.message}
+                            onChange={handleChange}
                             required
                             rows={4}
                             className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-white/30 transition-colors resize-none"
