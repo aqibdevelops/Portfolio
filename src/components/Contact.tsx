@@ -66,7 +66,7 @@ ${formData.message}`;
                 transition={{ duration: 0.6 }}
                 className="mb-16 text-center"
             >
-                <h2 className="text-3xl md:text-5xl font-semibold mb-4 text-gray-100 uppercase tracking-wide">Contact Me</h2>
+                <h2 className="text-3xl md:text-5xl font-semibold mb-4 text-gray-100 tracking-wide">Contact Me</h2>
                 <p className="text-gray-400 text-xl font-light">Let's build something together</p>
             </motion.div>
 
